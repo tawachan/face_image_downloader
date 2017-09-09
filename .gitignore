@@ -3,4 +3,4 @@ main.py
 *.idea
 __pycache__
 
-.gitignore
+.gitngnore
