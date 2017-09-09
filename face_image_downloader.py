@@ -53,7 +53,7 @@ class FaceImage:
       cv2.imwrite(os.path.join(self.folderpath, self.image_file_name()), face_image)
       self.count_up()
 
-  def display_urls(self):
+  def download(self):
     for url in self.urls:
       self.face_position(url)
 
