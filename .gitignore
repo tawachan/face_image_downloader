@@ -1,0 +1,4 @@
+*.jpg
+main.py
+mainLocal.py
+__pycache__

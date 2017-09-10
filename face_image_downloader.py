@@ -5,7 +5,11 @@ import urllib.request
 from datetime import datetime as dt
 
 class FaceImage:
-  def __init__(self, image_urls, filename = dt.now().strftime('%Y%m%d'), foldername = "image"):
+  def __init__(self, image_urls, filename, foldername):
+    if filename == "":
+      filename = dt.now().strftime('%Y%m%d')
+    if foldername == "":
+      foldername = "image"
     self.urls = image_urls
     self.filename = filename
     self.count = 1
@@ -53,8 +57,34 @@ class FaceImage:
       print("-- download: " + self.image_file_name())
       self.count_up()
 
+  def detect_local(self, path):
+    face_cascade_path = '/usr/local/opt/opencv/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml'
+
+    face_cascade = cv2.CascadeClassifier(face_cascade_path)
+
+    img = cv2.imread(path)
+    faces = face_cascade.detectMultiScale(img, scaleFactor=1.1, minNeighbors=1, minSize=(100, 100))
+
+    for (x, y, w, h) in faces:
+      x_expand = int(w * 0.1)
+      y_expand = int(h * 0.1)
+      x_start = int(x - x_expand / 2)
+      y_start = int(y - y_expand / 2)
+
+      face_image = img[y_start : y + h + y_expand, x_start : x + w + x_expand]
+
+      if not os.path.exists(self.folderpath):
+        os.mkdir(self.folderpath)
+      cv2.imwrite(os.path.join(self.folderpath, self.image_file_name()), face_image)
+      print("-- download: " + self.image_file_name())
+      self.count_up()
+
   def download(self):
     for url in self.urls:
       print("target image: " + url)
       self.detect(url)
 
+  def analyze(self):
+    for path in self.urls:
+      print("target path: " + path)
+      self.detect_local(path)
