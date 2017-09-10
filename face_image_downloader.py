@@ -31,14 +31,13 @@ class FaceImage:
   def count_up(self):
     self.count += 1
 
-  def face_position(self, url):
-    face_cascade_path = '/usr/local/opt/opencv/share/' \
-                        'OpenCV/haarcascades/haarcascade_frontalface_default.xml'
+  def detect(self, url):
+    face_cascade_path = '/usr/local/opt/opencv/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml'
 
     face_cascade = cv2.CascadeClassifier(face_cascade_path)
 
     img = self.url_to_image(url)
-    faces = face_cascade.detectMultiScale(img, scaleFactor=1.1, minNeighbors=1, minSize=(150, 150))
+    faces = face_cascade.detectMultiScale(img, scaleFactor=1.1, minNeighbors=1, minSize=(100, 100))
 
     for (x, y, w, h) in faces:
       x_expand = int(w * 0.1)
@@ -51,9 +50,11 @@ class FaceImage:
       if not os.path.exists(self.folderpath):
         os.mkdir(self.folderpath)
       cv2.imwrite(os.path.join(self.folderpath, self.image_file_name()), face_image)
+      print("-- download: " + self.image_file_name())
       self.count_up()
 
   def download(self):
     for url in self.urls:
-      self.face_position(url)
+      print("target image: " + url)
+      self.detect(url)
 
