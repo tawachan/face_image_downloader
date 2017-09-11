@@ -19,14 +19,14 @@ class FaceImage:
     return str(self.urls)
 
   def url_to_image(self, url):
-    # download the image, convert it to a NumPy array, and then read
-    # it into OpenCV format
-    resp = urllib.request.urlopen(url)
-    image = np.asarray(bytearray(resp.read()), dtype="uint8")
-    image = cv2.imdecode(image, cv2.IMREAD_COLOR)
-
-    # return the image
-    return image
+    try:
+      resp = urllib.request.urlopen(url)
+      image = np.asarray(bytearray(resp.read()), dtype="uint8")
+      image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+      return image
+    except urllib.error.HTTPError:
+      print("can not open this website: " + url)
+      raise ValueError
 
   def image_file_name(self):
     number_padded = '{0:04d}'.format(self.count)
@@ -40,7 +40,11 @@ class FaceImage:
 
     face_cascade = cv2.CascadeClassifier(face_cascade_path)
 
-    img = self.url_to_image(url)
+    try:
+      img = self.url_to_image(url)
+    except ValueError:
+      print("skip this website: " + url)
+      return ""
     faces = face_cascade.detectMultiScale(img, scaleFactor=1.1, minNeighbors=1, minSize=(100, 100))
 
     for (x, y, w, h) in faces:
