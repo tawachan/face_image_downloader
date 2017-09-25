@@ -8,5 +8,10 @@ this module is using cs2 to detect faces.
 
 # How To Use
 1. download the module [face_image_downloader].
-2. create instance with image_urls. (if you want to change filename and foldername, give respective arguments)
-3. execute download method and wait for a moment!
+2. create instance with the arguments blow.
+  first arg: array of file paths or array of urls
+  second arg(optional): base name of the image files that will be created
+  third arg(optional): folder name the created images will be stored
+3. execute either of the 2 methods
+  "analyze" method for array of path
+  "download" for array of urls
