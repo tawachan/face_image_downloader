@@ -1,4 +1,2 @@
-*.jpg
-main.py
-mainLocal.py
-__pycache__
+cropped/*
+images/*
