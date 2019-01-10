@@ -15,15 +15,15 @@ for line in open('./images/index.txt','r'):
         continue
 
     cascade = cv2.CascadeClassifier(cascade_path)
-    facerect = cascade.detectMultiScale(image, scaleFactor=1.8, minNeighbors=1, minSize=(200, 200))
+    facerect = cascade.detectMultiScale(image, scaleFactor=1.5, minNeighbors=1, minSize=(200, 200))
 
     if len(facerect) > 0:
         for rect in facerect:
             
-            x = rect[0]
-            y = rect[1]
-            width = rect[2]
-            height = rect[3]
+            x = rect[0] - 500
+            y = rect[1] - 500
+            width = rect[2] + 1000
+            height = rect[3] + 1000
             dst = image[y:y + height, x:x + width]
             save_path = dir_path + '/' + 'image(' + str(i) + ')' + '.jpg'
             
